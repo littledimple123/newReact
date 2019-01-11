@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import './index.css';
-import Clock from './App';
+import TodoList from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render( < Clock / > , document.getElementById('root'));
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+ReactDOM.render( < TodoList / > , document.getElementById('root'));
 
 
 serviceWorker.unregister();
