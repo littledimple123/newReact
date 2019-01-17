@@ -46,7 +46,7 @@ class App extends Component {
 
                     <
                     tbody > {
-                        this.state.records.map((record) => < Record key = { record.id } {...record }
+                        records.map((record) => < Record key = { record.id } {...record }
                             />)} < /
                             tbody >
 
