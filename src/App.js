@@ -24,6 +24,20 @@ class App extends Component {
             })
         )
     }
+    addRecord(record) { 
+       // console.log(record)
+        this.setState({
+            error: null,
+            isLoaded: true,
+            records: [
+                ...this.state.records,
+                record
+            ]
+        })
+    }
+    updateRecord(record) { 
+        //console.log(record)
+    }
     render() {
         const { error, isLoaded, records } = this.state;
         let recordsComponent;
@@ -40,10 +54,11 @@ class App extends Component {
                             <td> Date </td>
                             <td> Title </td>
                             <td> Amount </td>
+                            <td>Operation</td>
                         </tr> 
                         </thead> 
                         <tbody>
-                            {records.map((record) => < Record key = { record.id } {...record }/>)}
+                            {records.map((record) => < Record key={record.id} record={record} handleEditRecord={this.updateRecord.bind(this)}/>)}
                         </tbody>
                     </table >
                 </div>
@@ -53,7 +68,7 @@ class App extends Component {
         return (
             <div>
                 <h2> Records </h2>
-                <RecordForm /><br/>
+                <RecordForm handleNewRecord={this.addRecord.bind(this)}/><br/>
                 {recordsComponent} 
             </div >
         )
