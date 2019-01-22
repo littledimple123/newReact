@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Record from './record'
 import axios from 'axios'
 import RecordForm from './recordsForm'
+import AmountBox from './AmountBox'
 class App extends Component {
     constructor() {
         super()
@@ -35,8 +36,28 @@ class App extends Component {
             ]
         })
     }
-    updateRecord(record) { 
-        //console.log(record)
+    updateRecord(record, data) { 
+        //获得更新的索引值
+        const recordIndex = this.state.records.indexOf(record)
+        const newRecords = this.state.records.map((item, index) => { 
+            if (index !== recordIndex) { 
+                return item
+            }
+            return {
+                ...item,
+                ...data
+            }
+        })
+        this.setState({
+            records:newRecords
+        })
+    }
+    deleteRecord(record) { 
+        const recordIndex = this.state.records.indexOf(record)
+        const newRecords = this.state.records.filter((item, index) => index !== recordIndex)
+        this.setState({
+            records:newRecords
+        })
     }
     render() {
         const { error, isLoaded, records } = this.state;
@@ -58,7 +79,7 @@ class App extends Component {
                         </tr> 
                         </thead> 
                         <tbody>
-                            {records.map((record) => < Record key={record.id} record={record} handleEditRecord={this.updateRecord.bind(this)}/>)}
+                            {records.map((record) => < Record key={record.id} record={record} handleEditRecord={this.updateRecord.bind(this)} handleDeleteRecord={this.deleteRecord.bind(this)}/>)}
                         </tbody>
                     </table >
                 </div>
@@ -68,6 +89,11 @@ class App extends Component {
         return (
             <div>
                 <h2> Records </h2>
+                <div className='row mb-3'>
+                    <AmountBox text='Credit' type='success'/>                    
+                    <AmountBox text='Debit' type='danger'/>
+                    <AmountBox text='Balance' type='info'/>
+                </div>
                 <RecordForm handleNewRecord={this.addRecord.bind(this)}/><br/>
                 {recordsComponent} 
             </div >

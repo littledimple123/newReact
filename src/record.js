@@ -15,8 +15,13 @@ export default class Record extends Component {
             edit:!this.state.edit
         })
     }
-    handleDelect() { 
-
+    handleDelect(e) { 
+        e.preventDefault()
+        RecordsAPI.remove(this.props.record.id).then(
+            response=>this.props.handleDeleteRecord(this.props.record)
+        ).catch(
+            error=>console.log(error.message)
+        )
     }
     handleUpdate(e) { 
         e.preventDefault()
@@ -27,17 +32,14 @@ export default class Record extends Component {
             
         }
         
-        console.log(record)
-        RecordsAPI.update(this.props.id, record).then(
+        console.log(this.props.record.id)
+        RecordsAPI.update(this.props.record.id, record).then(
             response => { 
-                this.props.handleEditRecord(response.data)
+                this.props.handleEditRecord(this.props.record,response.data)
             }
         ).catch(
             error=>console.log(error.message)
         )
-        
-
-
     }
     recordRow() { 
         return (
@@ -55,9 +57,9 @@ export default class Record extends Component {
     recordForm() { 
         return (
             <tr>
-                <td> <input type='text' className='form-control' defaultValue={this.props.date} ref={(input)=>this.date=input}/> </td>
-                <td> <input type='text' className='form-control' defaultValue={this.props.title} ref={(input)=>this.title=input}/> </td>
-                <td> <input type='text' className='form-control' defaultValue={this.props.amount} ref={(input)=>this.amount=input}/> </td>
+                <td> <input type='text' className='form-control' defaultValue={this.props.record.date} ref={(input)=>this.date=input}/> </td>
+                <td> <input type='text' className='form-control' defaultValue={this.props.record.title} ref={(input)=>this.title=input}/> </td>
+                <td> <input type='text' className='form-control' defaultValue={this.props.record.amount} ref={(input)=>this.amount=input}/> </td>
                 <td>
                     <button className='btn btn-info mr-1' onClick={this.handleUpdate.bind(this)}>Update</button>
                     <button className='btn btn-danger' onClick={this.handleEdit.bind(this)}>Cancel</button>
