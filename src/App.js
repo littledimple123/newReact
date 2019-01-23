@@ -59,6 +59,25 @@ class App extends Component {
             records:newRecords
         })
     }
+    credits() { 
+        let credits = this.state.records.filter((record) => { 
+            return record.amount>=0
+        })
+        return credits.reduce((prev, curr) => { 
+            return prev + Number.parseInt(curr.amount,0)
+        },0)
+    }
+    debit() { 
+        let debit = this.state.records.filter((record) => { 
+            return record.amount<0
+        })
+        return debit.reduce((prev, curr) => { 
+            return prev + Number.parseInt(curr.amount,0)
+        },0)
+    }
+    balance() { 
+        return this.credits()+this.debit()
+    }
     render() {
         const { error, isLoaded, records } = this.state;
         let recordsComponent;
@@ -90,9 +109,9 @@ class App extends Component {
             <div>
                 <h2> Records </h2>
                 <div className='row mb-3'>
-                    <AmountBox text='Credit' type='success'/>                    
-                    <AmountBox text='Debit' type='danger'/>
-                    <AmountBox text='Balance' type='info'/>
+                    <AmountBox text='Credit' type='success' amount={this.credits()}/>                    
+                    <AmountBox text='Debit' type='danger' amount={this.debit()}/>
+                    <AmountBox text='Balance' type='info' amount={this.balance()}/>
                 </div>
                 <RecordForm handleNewRecord={this.addRecord.bind(this)}/><br/>
                 {recordsComponent} 
